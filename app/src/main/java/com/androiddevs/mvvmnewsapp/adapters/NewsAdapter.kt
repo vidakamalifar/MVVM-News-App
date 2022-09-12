@@ -24,19 +24,6 @@ class NewsAdapter(private val vm: NewsViewModel) : ListAdapter
             oldItem == newItem
     }
 
-//    inner class ArticleViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
-
-    private val differCallback = object : DiffUtil.ItemCallback<Article>() {
-
-        override fun areItemsTheSame(oldItem: Article, newItem: Article): Boolean {
-            return oldItem.url == newItem.url
-        }
-
-        override fun areContentsTheSame(oldItem: Article, newItem: Article): Boolean {
-            return oldItem == newItem
-        }
-    }
-
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
@@ -57,13 +44,11 @@ class NewsAdapter(private val vm: NewsViewModel) : ListAdapter
 
         fun bind(vm: NewsViewModel, article: Article) {
             Glide.with(binding.root.context).load(article.urlToImage).into(binding.ivArticleImage)
-
             binding.tvSource.text = article.source.name
             binding.tvTitle.text = article.title
             binding.tvDescription.text = article.description
             binding.tvPublishedAt.text = article.publishedAt
-            setOnItemClickListener { onItemClickListener?.let { it(article) } }
-
+            binding.root.setOnClickListener { onItemClickListener?.let { it(article) } }
         }
     }
 
@@ -74,5 +59,4 @@ class NewsAdapter(private val vm: NewsViewModel) : ListAdapter
     }
 
     override fun getItemCount() = currentList.size
-
 }
